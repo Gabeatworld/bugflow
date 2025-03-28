@@ -75,9 +75,9 @@ async function initCommenter() {
     await loadScript('https://html2canvas.hertzen.com/dist/html2canvas.min.js');
     await loadScript('https://cdn.tailwindcss.com');
     
-    // Load the commenter script from jsDelivr
+    // Load the commenter script from GitHub
     console.log('Loading main commenter script...');
-    await loadScript('https://cdn.jsdelivr.net/gh/Gabeatworld/bugflow@main/public/commenter.js');
+    await loadScript('https://raw.githubusercontent.com/Gabeatworld/bugflow/main/public/commenter.js');
     
     // Check if WebsiteCommenter is defined
     if (typeof WebsiteCommenter === 'undefined') {
