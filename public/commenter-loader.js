@@ -91,9 +91,9 @@ async function initCommenter() {
     console.log('Loading Tailwind...');
     await loadScript('https://cdn.tailwindcss.com');
     
-    // Load the commenter script using absolute URL
+    // Load the commenter script using jsDelivr
     console.log('Loading main commenter script...');
-    const commenterUrl = 'http://localhost:3000/commenter.js';
+    const commenterUrl = 'https://cdn.jsdelivr.net/gh/Gabeatworld/bugflow@main/public/commenter.js';
     console.log('Commenter URL:', commenterUrl);
     
     await loadScript(commenterUrl);
