@@ -29,7 +29,7 @@ async function initCommenter() {
     await loadScript('https://cdn.tailwindcss.com');
     
     // Load the commenter script from GitHub
-    await loadScript('https://raw.githubusercontent.com/YOUR_USERNAME/website-commenting/main/public/commenter.js');
+    await loadScript('https://raw.githubusercontent.com/Gabeatworld/bugflow/main/public/commenter.js');
     
     // Initialize the commenter
     new WebsiteCommenter();

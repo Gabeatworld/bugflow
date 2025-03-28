@@ -14,7 +14,7 @@ A lightweight commenting system that can be added to any website. Features inclu
 1. Add the following script to your website's HTML, just before the closing `</body>` tag:
 
 ```html
-<script src="https://raw.githubusercontent.com/YOUR_USERNAME/website-commenting/main/public/commenter-loader.js"></script>
+<script src="https://raw.githubusercontent.com/Gabeatworld/bugflow/main/public/commenter-loader.js"></script>
 ```
 
 2. Start the server:
