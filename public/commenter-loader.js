@@ -32,10 +32,22 @@ function createLoadingIndicator() {
 // Load required dependencies
 function loadScript(url) {
   return new Promise((resolve, reject) => {
+    console.log(`Loading script: ${url}`);
     const script = document.createElement('script');
     script.src = url;
-    script.onload = resolve;
-    script.onerror = reject;
+    script.async = true;
+    script.crossOrigin = 'anonymous';
+    
+    script.onload = () => {
+      console.log(`Script loaded: ${url}`);
+      resolve();
+    };
+    
+    script.onerror = (error) => {
+      console.error(`Script failed to load: ${url}`, error);
+      reject(error);
+    };
+    
     document.head.appendChild(script);
   });
 }
@@ -57,14 +69,23 @@ async function initCommenter() {
   const loadingIndicator = createLoadingIndicator();
   
   try {
+    console.log('Starting to load dependencies...');
+    
     // Load dependencies
     await loadScript('https://html2canvas.hertzen.com/dist/html2canvas.min.js');
     await loadScript('https://cdn.tailwindcss.com');
     
     // Load the commenter script from jsDelivr
+    console.log('Loading main commenter script...');
     await loadScript('https://cdn.jsdelivr.net/gh/Gabeatworld/bugflow@main/public/commenter.js');
     
+    // Check if WebsiteCommenter is defined
+    if (typeof WebsiteCommenter === 'undefined') {
+      throw new Error('WebsiteCommenter class not found after loading script');
+    }
+    
     // Initialize the commenter
+    console.log('Creating WebsiteCommenter instance...');
     new WebsiteCommenter();
     
     // Update loading indicator
@@ -89,6 +110,7 @@ async function initCommenter() {
 }
 
 // Start loading when the page is ready
+console.log('Commenter loader initialized');
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initCommenter);
 } else {
