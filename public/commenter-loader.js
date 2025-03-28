@@ -1,11 +1,14 @@
-// Immediate console log to verify script is running
+// Debug: Log immediately when script starts
 console.log('🔄 Commenter loader script starting...');
 
-// Get the current script's URL to determine the base path
+// Debug: Log current script information
 const currentScript = document.currentScript;
-const baseUrl = currentScript ? currentScript.src.substring(0, currentScript.src.lastIndexOf('/') + 1) : '';
+console.log('Current script:', currentScript);
+console.log('Current script src:', currentScript ? currentScript.src : 'No current script');
 
-console.log('Base URL:', baseUrl);
+// Debug: Log document information
+console.log('Document readyState:', document.readyState);
+console.log('Document location:', window.location.href);
 
 // Create a visible indicator that the system is loading
 function createLoadingIndicator() {
@@ -47,7 +50,7 @@ function loadScript(url) {
         url: url,
         error: error,
         readyState: document.readyState,
-        baseUrl: baseUrl
+        location: window.location.href
       });
       reject(error);
     };
@@ -88,18 +91,12 @@ async function initCommenter() {
     console.log('Loading Tailwind...');
     await loadScript('https://cdn.tailwindcss.com');
     
-    // Load the commenter script using the full URL
+    // Load the commenter script using absolute URL
     console.log('Loading main commenter script...');
-    const commenterUrl = baseUrl + 'commenter.js';
+    const commenterUrl = 'http://localhost:3000/commenter.js';
     console.log('Commenter URL:', commenterUrl);
     
-    try {
-      await loadScript(commenterUrl);
-    } catch (error) {
-      console.log('Failed to load from base URL, trying alternative...');
-      // Try alternative URL if base URL fails
-      await loadScript('http://localhost:3000/commenter.js');
-    }
+    await loadScript(commenterUrl);
     
     // Check if WebsiteCommenter is defined
     if (typeof WebsiteCommenter === 'undefined') {
@@ -126,7 +123,7 @@ async function initCommenter() {
       error: error,
       message: error.message,
       stack: error.stack,
-      baseUrl: baseUrl
+      location: window.location.href
     });
     
     loadingIndicator.textContent = 'Failed to load Comment System';
