@@ -28,8 +28,8 @@ async function initCommenter() {
     await loadScript('https://html2canvas.hertzen.com/dist/html2canvas.min.js');
     await loadScript('https://cdn.tailwindcss.com');
     
-    // Load the commenter script
-    await loadScript('http://localhost:3000/commenter.js');
+    // Load the commenter script from GitHub
+    await loadScript('https://raw.githubusercontent.com/YOUR_USERNAME/website-commenting/main/public/commenter.js');
     
     // Initialize the commenter
     new WebsiteCommenter();
