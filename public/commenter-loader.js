@@ -1,6 +1,12 @@
 // Immediate console log to verify script is running
 console.log('🔄 Commenter loader script starting...');
 
+// Get the current script's URL to determine the base path
+const currentScript = document.currentScript;
+const baseUrl = currentScript ? currentScript.src.substring(0, currentScript.src.lastIndexOf('/') + 1) : '';
+
+console.log('Base URL:', baseUrl);
+
 // Create a visible indicator that the system is loading
 function createLoadingIndicator() {
   console.log('Creating loading indicator...');
@@ -37,6 +43,12 @@ function loadScript(url) {
     
     script.onerror = (error) => {
       console.error(`❌ Script failed to load: ${url}`, error);
+      console.error('Error details:', {
+        url: url,
+        error: error,
+        readyState: document.readyState,
+        baseUrl: baseUrl
+      });
       reject(error);
     };
     
@@ -76,9 +88,18 @@ async function initCommenter() {
     console.log('Loading Tailwind...');
     await loadScript('https://cdn.tailwindcss.com');
     
-    // Load the commenter script from local server
+    // Load the commenter script using the full URL
     console.log('Loading main commenter script...');
-    await loadScript('/commenter.js');
+    const commenterUrl = baseUrl + 'commenter.js';
+    console.log('Commenter URL:', commenterUrl);
+    
+    try {
+      await loadScript(commenterUrl);
+    } catch (error) {
+      console.log('Failed to load from base URL, trying alternative...');
+      // Try alternative URL if base URL fails
+      await loadScript('http://localhost:3000/commenter.js');
+    }
     
     // Check if WebsiteCommenter is defined
     if (typeof WebsiteCommenter === 'undefined') {
@@ -101,6 +122,13 @@ async function initCommenter() {
     
   } catch (error) {
     console.error('Failed to initialize commenter:', error);
+    console.error('Full error details:', {
+      error: error,
+      message: error.message,
+      stack: error.stack,
+      baseUrl: baseUrl
+    });
+    
     loadingIndicator.textContent = 'Failed to load Comment System';
     loadingIndicator.style.background = '#f44336';
     loadingIndicator.style.cursor = 'pointer';
