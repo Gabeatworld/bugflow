@@ -29,7 +29,7 @@ function createLoadingIndicator() {
   return indicator;
 }
 
-// Load required dependencies
+// Load required dependencies with version pinning
 function loadScript(url) {
   return new Promise((resolve, reject) => {
     console.log(`Loading script: ${url}`);
@@ -38,8 +38,11 @@ function loadScript(url) {
     script.async = true;
     script.crossOrigin = 'anonymous';
     
+    // Add cache control headers
+    script.setAttribute('cache-control', 'public, max-age=3600');
+    
     script.onload = () => {
-      console.log(`Script loaded: ${url}`);
+      console.log(`Script loaded successfully: ${url}`);
       resolve();
     };
     
@@ -52,12 +55,13 @@ function loadScript(url) {
   });
 }
 
-// Load required styles
+// Load required styles with version pinning
 function loadStyles(url) {
   return new Promise((resolve, reject) => {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = url;
+    link.crossOrigin = 'anonymous';
     link.onload = resolve;
     link.onerror = reject;
     document.head.appendChild(link);
@@ -71,13 +75,13 @@ async function initCommenter() {
   try {
     console.log('Starting to load dependencies...');
     
-    // Load dependencies
-    await loadScript('https://html2canvas.hertzen.com/dist/html2canvas.min.js');
-    await loadScript('https://cdn.tailwindcss.com');
+    // Load dependencies with specific versions
+    await loadScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js');
+    await loadScript('https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio');
     
-    // Load the commenter script from GitHub
+    // Load the commenter script from jsDelivr CDN
     console.log('Loading main commenter script...');
-    await loadScript('https://raw.githubusercontent.com/Gabeatworld/bugflow/main/public/commenter.js');
+    await loadScript('https://cdn.jsdelivr.net/gh/Gabeatworld/bugflow@main/public/commenter.js');
     
     // Check if WebsiteCommenter is defined
     if (typeof WebsiteCommenter === 'undefined') {
