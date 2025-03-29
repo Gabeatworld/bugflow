@@ -32,7 +32,7 @@ function createLoadingIndicator() {
 }
 
 // Load required dependencies with version pinning and retry logic
-function loadScript(url, { retries = 3, timeout = 5000 } = {}) {
+function loadScript(url, { retries = 3, timeout = 5000, skipCORS = false } = {}) {
   return new Promise((resolve, reject) => {
     const tryLoad = (attemptsLeft) => {
       console.log(`Loading script (${retries - attemptsLeft + 1}/${retries} attempts): ${url}`);
@@ -41,7 +41,12 @@ function loadScript(url, { retries = 3, timeout = 5000 } = {}) {
       const script = document.createElement('script');
       script.src = url;
       script.async = true;
-      script.crossOrigin = 'anonymous';
+      
+      // Only add crossOrigin if not skipping CORS
+      if (!skipCORS) {
+        script.crossOrigin = 'anonymous';
+      }
+      
       script.type = 'text/javascript';
       
       // Force cache headers
@@ -133,7 +138,9 @@ async function initCommenter() {
     
     // Load dependencies with specific versions
     await loadScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js');
-    await loadScript('https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio');
+    
+    // Load Tailwind from unpkg with CORS disabled
+    await loadScript('https://unpkg.com/tailwindcss@3.3.0/dist/tailwind.min.js', { skipCORS: true });
     
     // Load the commenter script from jsDelivr CDN with proper URL format
     console.log('Loading main commenter script...', { timestamp: new Date().toISOString() });
