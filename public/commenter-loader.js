@@ -137,10 +137,10 @@ async function initCommenter() {
     console.log('Starting to load dependencies...', { timestamp: new Date().toISOString() });
     
     // Load dependencies with specific versions
-    await loadScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js');
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
     
-    // Load Tailwind from unpkg with CORS disabled
-    await loadScript('https://unpkg.com/tailwindcss@3.3.0/dist/tailwind.min.js', { skipCORS: true });
+    // Load Tailwind from CDN with CORS disabled
+    await loadScript('https://cdn.tailwindcss.com', { skipCORS: true });
     
     // Load the commenter script from jsDelivr CDN with proper URL format
     console.log('Loading main commenter script...', { timestamp: new Date().toISOString() });
